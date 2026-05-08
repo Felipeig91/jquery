@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+h2 {
+  color: #667eea;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+input[type="text"].error,
+input[type="email"].error,
+input[type="number"].error,
+select.error,
+textarea.error {
+  border-color: #ff6b6b;
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+label input[type="checkbox"] {
+  display: inline;
+  margin-bottom: 0;
+  margin-right: 10px;
+  width: auto;
+}
+
+.error-msg {
+  display: block;
+  color: #ff6b6b;
+  font-size: 14px;
+  margin-top: 5px;
+  min-height: 20px;
+}
+
+.btn-submit,
+.btn-reset {
+  padding: 12px 30px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  margin-right: 10px;
+}
+
+.btn-submit {
+  background-color: #667eea;
+  color: white;
+}
+
+.btn-submit:hover {
+  background-color: #5568d3;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-reset {
+  background-color: #ddd;
+  color: #333;
+}
+
+.btn-reset:hover {
+  background-color: #ccc;
+}
+
+.resultado {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f0f4ff;
+  border-left: 5px solid #667eea;
+  border-radius: 5px;
+  animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.resultado p {
+  margin: 10px 0;
+  color: #333;
+  line-height: 1.6;
+}
+
+.resultado strong {
+  color: #667eea;
+}

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ejemplo Básico jQuery</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <h1>Mi página con jQuery</h1>
+    <button id="miBoton">Haz clic aquí</button>
+    <p id="miParrafo">Este es un párrafo</p>
+
+    <script>
+      // Cambiar texto al hacer clic
+      $("#miBoton").click(function () {
+        $("#miParrafo").text("¡Has hecho clic!");
+      });
+
+      // Cambiar color de fondo
+      $("#miBoton").hover(
+        function () {
+          $(this).css("background-color", "blue");
+          $(this).css("color", "white");
+        },
+        function () {
+          $(this).css("background-color", "");
+          $(this).css("color", "");
+        },
+      );
+
+      // Seleccionar elementos y manipularlos
+      $(document).ready(function () {
+        // Ocultar/mostrar párrafo al hacer clic en el título
+        $("h1").on("click", function () {
+          $("#miParrafo").slideToggle();
+        });
+      });
+    </script>
+  </body>
+</html>
