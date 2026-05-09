@@ -24,7 +24,7 @@ $(document).ready(function() {
                             <td>${usuario.username}</td>
                             <td>${usuario.email}</td>
                             <td>${usuario.address.city}</td>
-                            <td>${usuario.address.zipCode}</td>
+                            <td>${usuario.address.zipcode}</td>
                         </tr>
                     `;
                     // Insertar la fila en el cuerpo de la tabla
