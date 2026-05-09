@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ejercicio AJAX - API Pokémon</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .header {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        padding: 40px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      h1 {
+        color: #e74c3c;
+        margin-bottom: 10px;
+        font-size: 32px;
+      }
+      .subtitle {
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 16px;
+      }
+      button {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        border: none;
+        padding: 14px 40px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+      }
+      button:active {
+        transform: translateY(0);
+      }
+      .pokemon-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+      .pokemon-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .pokemon-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+      }
+      .pokemon-image {
+        background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+      }
+      .pokemon-image img {
+        max-width: 100%;
+        max-height: 100%;
+        image-rendering: pixelated;
+      }
+      .pokemon-info {
+        padding: 20px;
+      }
+      .pokemon-name {
+        color: #2c3e50;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-transform: capitalize;
+      }
+      .pokemon-weight {
+        color: #7f8c8d;
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+      .pokemon-types {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .type-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        color: white;
+        text-transform: capitalize;
+      }
+      .type-normal {
+        background: #a8a878;
+      }
+      .type-fire {
+        background: #f08030;
+      }
+      .type-water {
+        background: #6890f0;
+      }
+      .type-grass {
+        background: #78c850;
+      }
+      .type-electric {
+        background: #f8d030;
+        color: #333;
+      }
+      .type-ice {
+        background: #98d8d8;
+        color: #333;
+      }
+      .type-fighting {
+        background: #c03028;
+      }
+      .type-poison {
+        background: #a040a0;
+      }
+      .type-ground {
+        background: #e0c068;
+        color: #333;
+      }
+      .type-flying {
+        background: #a890f0;
+      }
+      .type-psychic {
+        background: #f85888;
+      }
+      .type-bug {
+        background: #a8b820;
+      }
+      .type-rock {
+        background: #b8a038;
+      }
+      .type-ghost {
+        background: #705898;
+      }
+      .type-dragon {
+        background: #7038f8;
+      }
+      .type-dark {
+        background: #705848;
+      }
+      .type-steel {
+        background: #b8b8d0;
+        color: #333;
+      }
+      .type-fairy {
+        background: #ee99ac;
+      }
+      .loading {
+        text-align: center;
+        color: #e74c3c;
+        font-weight: 600;
+        font-size: 18px;
+        padding: 40px;
+      }
+      .error {
+        background: white;
+        border-left: 4px solid #e74c3c;
+        padding: 20px;
+        border-radius: 8px;
+        color: #c0392b;
+        margin-top: 20px;
+      }
+      .error h3 {
+        margin-bottom: 10px;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .pokemon-grid {
+        animation: slideIn 0.5s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🔴 Pokémon Explorer 🔴</h1>
+        <p class="subtitle">Explorar Pokémon usando la API Pokémon</p>
+        <button id="btn">Cargar Pokémon</button>
+      </div>
+
+      <div id="resultado"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      // Mapeo de colores para tipos de Pokémon
+      const typeColors = {
+        normal: "normal",
+        fire: "fire",
+        water: "water",
+        grass: "grass",
+        electric: "electric",
+        ice: "ice",
+        fighting: "fighting",
+        poison: "poison",
+        ground: "ground",
+        flying: "flying",
+        psychic: "psychic",
+        bug: "bug",
+        rock: "rock",
+        ghost: "ghost",
+        dragon: "dragon",
+        dark: "dark",
+        steel: "steel",
+        fairy: "fairy",
+      };
+
+      $(document).ready(function () {
+        $("#btn").click(function () {
+          // Mostrar indicador de carga
+          $("#resultado").html(
+            "<div class='loading'>🔄 Cargando Pokémon...</div>",
+          );
+
+          // Obtener lista de Pokémon (primeros 20)
+          $.ajax({
+            url: "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0",
+            method: "GET",
+            success: function (data) {
+              let html = '<div class="pokemon-grid">';
+
+              // Iterar sobre cada Pokémon y obtener detalles
+              data.results.forEach(function (pokemon) {
+                $.ajax({
+                  url: pokemon.url,
+                  method: "GET",
+                  success: function (details) {
+                    // Crear tarjeta del Pokémon
+                    let typesHtml = "";
+                    details.types.forEach(function (typeObj) {
+                      const typeName = typeObj.type.name;
+                      const typeClass = typeColors[typeName] || "normal";
+                      typesHtml +=
+                        '<span class="type-badge type-' +
+                        typeClass +
+                        '">' +
+                        typeName +
+                        "</span>";
+                    });
+
+                    const card =
+                      '<div class="pokemon-card">' +
+                      '<div class="pokemon-image">' +
+                      '<img src="' +
+                      (details.sprites.front_default ||
+                        "https://via.placeholder.com/150") +
+                      '" alt="' +
+                      details.name +
+                      '">' +
+                      "</div>" +
+                      '<div class="pokemon-info">' +
+                      '<div class="pokemon-name">' +
+                      details.name +
+                      "</div>" +
+                      '<div class="pokemon-weight">⚖️ ' +
+                      details.weight / 10 +
+                      " kg</div>" +
+                      '<div class="pokemon-types">' +
+                      typesHtml +
+                      "</div>" +
+                      "</div>" +
+                      "</div>";
+
+                    $("#resultado").append(card);
+                  },
+                });
+              });
+
+              // Envolver en el grid después de un pequeño delay
+              setTimeout(function () {
+                const allCards = $("#resultado").html();
+                $("#resultado").html(
+                  '<div class="pokemon-grid">' + allCards + "</div>",
+                );
+              }, 500);
+            },
+            error: function () {
+              // Mostrar mensaje de error
+              $("#resultado").html(
+                '<div class="error"><h3>❌ Error</h3><p>No se pudo obtener los Pokémon. Por favor, intenta de nuevo.</p></div>',
+              );
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

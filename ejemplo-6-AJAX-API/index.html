@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ejercicio AJAX - API JSONPlaceholder</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+      .container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        padding: 40px;
+        max-width: 900px;
+        width: 100%;
+      }
+      h1 {
+        color: #333;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .subtitle {
+        color: #666;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 14px;
+      }
+      button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 30px;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+      }
+      button:active {
+        transform: translateY(0);
+      }
+      #resultado {
+        background: #f8f9fa;
+        border-left: 4px solid #667eea;
+        padding: 20px;
+        border-radius: 6px;
+        min-height: 100px;
+        display: none;
+      }
+      #resultado.show {
+        display: block;
+        animation: slideIn 0.3s ease-in;
+      }
+      .usuario-card {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+      }
+      .usuario-card:hover {
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        transform: translateY(-2px);
+      }
+      .usuario-card h3 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+      .usuario-card p {
+        color: #666;
+        margin-bottom: 6px;
+        font-size: 13px;
+      }
+      #resultado h3 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 20px;
+      }
+      #resultado p {
+        color: #666;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+      .loading {
+        text-align: center;
+        color: #667eea;
+        font-weight: 600;
+        margin-top: 20px;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .error {
+        background: #fee;
+        border-left-color: #f44;
+        color: #c33;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Ejercicio AJAX</h1>
+      <p class="subtitle">
+        Obtener todos los usuarios desde API JSONPlaceholder
+      </p>
+
+      <button id="btn">Obtener Todos los Usuarios</button>
+
+      <div id="resultado"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#btn").click(function () {
+          // Mostrar indicador de carga
+          $("#resultado")
+            .html("<div class='loading'>Cargando todos los usuarios...</div>")
+            .addClass("show");
+
+          $.ajax({
+            url: "https://jsonplaceholder.typicode.com/users",
+            method: "GET",
+            success: function (data) {
+              // Crear HTML para todos los usuarios
+              let html = "<h3>Total de usuarios: " + data.length + "</h3>";
+
+              // Iterar sobre cada usuario y crear una tarjeta
+              data.forEach(function (usuario) {
+                html +=
+                  '<div class="usuario-card">' +
+                  "<h3>" +
+                  usuario.name +
+                  "</h3>" +
+                  "<p><strong>Email:</strong> " +
+                  usuario.email +
+                  "</p>" +
+                  "<p><strong>Teléfono:</strong> " +
+                  usuario.phone +
+                  "</p>" +
+                  "<p><strong>Sitio Web:</strong> " +
+                  usuario.website +
+                  "</p>" +
+                  "<p><strong>Empresa:</strong> " +
+                  usuario.company.name +
+                  "</p>" +
+                  "</div>";
+              });
+
+              // Mostrar todos los usuarios
+              $("#resultado").html(html).removeClass("error");
+            },
+            error: function () {
+              // Mostrar mensaje de error
+              $("#resultado")
+                .html(
+                  "<h3>Error</h3>" +
+                    "<p>No se pudo obtener los datos. Por favor, intenta de nuevo.</p>",
+                )
+                .addClass("error");
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
